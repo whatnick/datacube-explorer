@@ -126,7 +126,7 @@ echo "drop schema if exists cubedash cascade;
   UPDATE agdc.dataset d SET metadata = jsonb_build_object('creation_dt', s.metadata#>>'{extent, center_dt}') || s.metadata FROM agdc.dataset s WHERE d.dataset_type_ref=${id_2} AND d.id = s.id;
   UPDATE agdc.dataset d SET metadata = jsonb_build_object('creation_dt', s.metadata#>>'{extent, center_dt}') || s.metadata FROM agdc.dataset s WHERE d.dataset_type_ref=${id_3} AND d.id = s.id;
   UPDATE agdc.dataset d SET metadata = jsonb_build_object('creation_dt', s.metadata#>>'{extent, center_dt}') || s.metadata FROM agdc.dataset s WHERE d.dataset_type_ref=${id_4} AND d.id = s.id;" |
-  "${psql_args}" -d "${dbname}"
+  psql ${psql_args} -d ${dbname}
 
 $python -m cubedash.generate -C datacube_${DBNAME}.conf --all || true
 
@@ -136,7 +136,7 @@ psql "${dbname}" -X -c 'create index tix_region_center ON cubedash.dataset_spati
 log_info "Done $(date)"
 
 log_info "Testing a summary"
-if ! $python -m cubedash.summary.show -C datacube_${DBNAME}.conf "${test_product};"
+if ! $python -m cubedash.summary.show -C datacube_${DBNAME}.conf "${test_product}";
 then
     log_info "Summary gen seems to have failed"
     exit 1
