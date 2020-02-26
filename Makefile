@@ -70,3 +70,7 @@ schema:
 index:
 	docker-compose exec explorer \
 		python3 /code/cubedash/generate.py --all
+
+force-refresh:
+	docker-compose exec explorer \
+		python3 /code/cubedash/generate.py --force-refresh --refresh-stats --all
